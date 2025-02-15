@@ -22,11 +22,10 @@ import {
 
 import {
   DocumentTransform,
-  Observable,
-  ObservableSubscription,
   offsetLimitPagination,
   removeDirectivesFromDocument,
 } from "../utilities";
+import { Observable, Subscription, of } from "rxjs";
 import { ApolloLink } from "../link/core";
 import {
   createFragmentRegistry,
@@ -161,7 +160,7 @@ describe("client", () => {
 
     const variables = { first: 1 };
 
-    const link = ApolloLink.from([() => Observable.of({ data })]);
+    const link = ApolloLink.from([() => of({ data })]);
 
     const client = new ApolloClient({
       link,
@@ -693,7 +692,7 @@ describe("client", () => {
       },
     };
 
-    const link = ApolloLink.from([() => Observable.of({ data }, { data })]);
+    const link = ApolloLink.from([() => of({ data }, { data })]);
 
     const client = new ApolloClient({
       link,
@@ -980,7 +979,7 @@ describe("client", () => {
     const link = new ApolloLink((operation) => {
       result.current = operation;
 
-      return Observable.of({
+      return of({
         data: {
           author: {
             firstName: "John",
@@ -1352,7 +1351,7 @@ describe("client", () => {
     const link = ApolloLink.from([
       (request) => {
         expect(request.operationName).toBe("myQueryName");
-        return Observable.of({ data });
+        return of({ data });
       },
     ]);
     const client = new ApolloClient({
@@ -1377,7 +1376,7 @@ describe("client", () => {
     const link = ApolloLink.from([
       (request) => {
         expect(request.operationName).toBe("myMutationName");
-        return Observable.of({ data });
+        return of({ data });
       },
     ]);
     const client = new ApolloClient({
@@ -3198,7 +3197,7 @@ describe("@connection", () => {
     const client = new ApolloClient({ cache });
 
     const obsQueries = new Set<ObservableQuery<any>>();
-    const subs = new Set<ObservableSubscription>();
+    const subs = new Set<Subscription>();
     function watch(
       query: DocumentNode,
       fetchPolicy: WatchQueryFetchPolicy = "cache-first"
@@ -3600,7 +3599,7 @@ describe("custom document transforms", () => {
     const link = new ApolloLink((operation) => {
       document = operation.query;
 
-      return Observable.of({
+      return of({
         data: {
           dogs: [
             {
@@ -3682,7 +3681,7 @@ describe("custom document transforms", () => {
     const link = new ApolloLink((operation) => {
       document = operation.query;
 
-      return Observable.of({
+      return of({
         data: {
           dogs: [
             {
@@ -3769,7 +3768,7 @@ describe("custom document transforms", () => {
     });
 
     const link = new ApolloLink(() => {
-      return Observable.of({
+      return of({
         data: {
           product: {
             __typename: "Product",
@@ -3861,7 +3860,7 @@ describe("custom document transforms", () => {
     const link = new ApolloLink((operation) => {
       document = operation.query;
 
-      return Observable.of({
+      return of({
         data: {
           currentUser: {
             id: 1,
@@ -3924,7 +3923,7 @@ describe("custom document transforms", () => {
     });
 
     const link = new ApolloLink(() => {
-      return Observable.of({
+      return of({
         data: {
           currentUser: {
             id: 1,
@@ -3963,7 +3962,7 @@ describe("custom document transforms", () => {
     const link = new ApolloLink((operation) => {
       document = operation.query;
 
-      return Observable.of();
+      return of();
     });
 
     const client = new ApolloClient({
@@ -4006,7 +4005,7 @@ describe("custom document transforms", () => {
     const link = new ApolloLink((operation) => {
       document = operation.query;
 
-      return Observable.of({
+      return of({
         data: {
           changeUsername: {
             id: 1,
@@ -4178,7 +4177,7 @@ describe("custom document transforms", () => {
     const link = new ApolloLink((operation) => {
       document = operation.query;
 
-      return Observable.of({
+      return of({
         data: {
           changeUsername: {
             id: 1,
@@ -4243,7 +4242,7 @@ describe("custom document transforms", () => {
     });
 
     const link = new ApolloLink((operation) => {
-      return Observable.of({
+      return of({
         data: {
           changeUsername: {
             id: 1,
@@ -4283,7 +4282,7 @@ describe("custom document transforms", () => {
     const link = new ApolloLink((operation) => {
       document = operation.query;
 
-      return Observable.of({
+      return of({
         data: {
           updateProfile: {
             __typename: "Profile",
@@ -4334,7 +4333,7 @@ describe("custom document transforms", () => {
     const link = new ApolloLink((operation) => {
       document = operation.query;
 
-      return Observable.of({
+      return of({
         data: {
           profileUpdated: {
             id: 1,
@@ -4410,7 +4409,7 @@ describe("custom document transforms", () => {
     const link = new ApolloLink((operation) => {
       document = operation.query;
 
-      return Observable.of({
+      return of({
         data: {
           profileUpdated: {
             id: 1,
@@ -4503,7 +4502,7 @@ describe("custom document transforms", () => {
     const link = new ApolloLink((operation) => {
       document = operation.query;
 
-      return Observable.of({
+      return of({
         data: {
           profileUpdated: {
             __typename: "Profile",
@@ -4570,7 +4569,7 @@ describe("custom document transforms", () => {
     const link = new ApolloLink((operation) => {
       document = operation.query;
 
-      return Observable.of({
+      return of({
         data: { currentUser: { __typename: "User", id: 1, name: "John Doe" } },
       });
     });
@@ -4629,7 +4628,7 @@ describe("custom document transforms", () => {
     const link = new ApolloLink((operation) => {
       document = operation.query;
 
-      return Observable.of({
+      return of({
         data: {
           currentUser: {
             __typename: "User",
@@ -4698,7 +4697,7 @@ describe("custom document transforms", () => {
     });
 
     const link = new ApolloLink(() => {
-      return Observable.of({
+      return of({
         data: {
           product: {
             __typename: "Product",
@@ -5554,7 +5553,7 @@ describe("custom document transforms", () => {
     const link = new ApolloLink((operation) => {
       document = operation.query;
 
-      return Observable.of({
+      return of({
         data: {
           product: {
             __typename: "Product",
@@ -5630,7 +5629,7 @@ describe("custom document transforms", () => {
     const link = new ApolloLink((operation) => {
       document = operation.query;
 
-      return Observable.of({
+      return of({
         data: {
           product: {
             __typename: "Product",
@@ -5719,7 +5718,7 @@ describe("custom document transforms", () => {
     const link = new ApolloLink((operation) => {
       document = operation.query;
 
-      return Observable.of({
+      return of({
         data: {
           product: {
             __typename: "Product",
@@ -5801,7 +5800,7 @@ describe("custom document transforms", () => {
       link: new ApolloLink((operation) => {
         requests.push(operation);
 
-        return Observable.of({
+        return of({
           data: operation.operationName
             .split("")
             .reduce<Record<string, string>>(
@@ -5886,7 +5885,7 @@ describe("custom document transforms", () => {
       link: new ApolloLink((operation) => {
         requests.push(operation);
 
-        return Observable.of({
+        return of({
           data: operation.operationName
             .split("")
             .reduce<Record<string, string>>(
@@ -5975,7 +5974,7 @@ describe("custom document transforms", () => {
       link: new ApolloLink((operation) => {
         requests.push(operation);
 
-        return Observable.of({
+        return of({
           data: operation.operationName
             .split("")
             .reduce<Record<string, string>>(
@@ -6049,7 +6048,7 @@ describe("custom document transforms", () => {
       link: new ApolloLink((operation) => {
         requests.push(operation);
 
-        return Observable.of({
+        return of({
           data: operation.operationName
             .split("")
             .reduce<Record<string, string>>(
